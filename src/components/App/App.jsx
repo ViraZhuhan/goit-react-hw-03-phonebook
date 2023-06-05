@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Title from './Title';
-import ContactForm from './ContactForm';
-import ContactsTitle from './ContactsTitle';
-import Filter from './Filter/Filter';
-import ContactsList from './ContactList';
-
+import Title from '../Title';
+import ContactForm from '../ContactForm';
+import ContactsTitle from '../ContactsTitle';
+import Filter from '../Filter/Filter';
+import ContactsList from '../ContactList';
 import { Container } from './App.styled';
 import { nanoid } from 'nanoid';
 
@@ -36,9 +35,25 @@ class App extends Component {
     filter: this.props.filter,
   };
 
+  componentDidMount() {
+    const contacts = localStorage.getItem('contacts');
+    const parsedContacts = JSON.parse(contacts);
+
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   formSubmitData = ({ name, number }) => {
     const isFindName = this.state.contacts.find(
-      contact => contact.name.toLowerCase() === name.toLowerCase());
+      contact => contact.name.toLowerCase() === name.toLowerCase()
+    );
 
     if (isFindName) {
       alert(`${name} is already in contacts !`);
@@ -79,9 +94,9 @@ class App extends Component {
 
     return (
       <Container>
-        <Title title="Phonebook"/>
+        <Title title="Phonebook" />
         <ContactForm onSubmit={this.formSubmitData} />
-        <ContactsTitle title="Contacts"/>
+        <ContactsTitle title="Contacts" />
         <Filter onChange={this.changeFilter} value={this.state.filter} />
         <ContactsList contacts={visibleFilters} onDelete={this.deleteContact} />
       </Container>

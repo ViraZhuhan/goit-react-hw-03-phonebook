@@ -1,78 +1,84 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
-import { Form, Label, Input, AddButton } from './ContactForm.styled';
+import { Formik } from 'formik';
+import { object, string } from 'yup';
+import {
+  FormEl,
+  Label,
+  Input,
+  AddButton,
+  FormError,
+} from './ContactForm.styled';
 
 class ContactForm extends Component {
-  
-    static defaultProps = {
-        name: '',
-        number: '',
-      };
-    
-      static propTypes = {
-        name: PropTypes.string.isRequired,
-        number: PropTypes.string.isRequired,
-      };
-    
-      state = {
-        name: this.props.name,
-        number: this.props.number,
-    
-      };
-
-      nameInputId = nanoid();
-      numberInputId = nanoid();
-  
-
-  handleChange = evt => {
-    const {name, value} = evt.currentTarget;
-    this.setState({ 
-        [name]: value,
-     });
+  initialValues = {
+    name: '',
+    number: '',
   };
 
-  handleSubmit = evt => {
-    evt.preventDefault();
-    this.props.onSubmit(this.state)
-    this.reset();
-  }
+  nameInputId = nanoid();
+  numberInputId = nanoid();
 
-  reset = () => {
-    this.setState({name: '',
-    number: ''})
-  }
+  userSchema = object({
+    name: string()
+      .matches(
+        /^[A-z-А-я\s]+$/,
+        "Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+      )
+      .required(),
+    number: string()
+      .matches(
+        /^[0-9-{3}0-9-{2}0-9-{2}]+$/,
+        'Phone number must contain 8 number and must be digits'
+      )
+      .required(),
+  });
 
-  render() {
-    const { name, number } = this.state;
+
+ 
+
+
+ handleChange = evt => {
+    const { name, value } = evt.currentTarget;
+    this.setState({
+      [name]: value,
+    });
+  };
+
+  handleSubmit = (values, { resetForm }) => {
+    this.props.onSubmit(values);
+    resetForm();
+  };
+
+    render() {
     return (
-      <Form onSubmit={this.handleSubmit}>
-        <Label htmlFor={this.nameInputId}></Label>
+      <Formik
+        initialValues={this.initialValues}
+        validationSchema={this.userSchema}
+        onSubmit={this.handleSubmit}
+      >
+        <FormEl autoComplete="off">
+          <Label htmlFor={this.nameInputId}></Label>
           Name
           <Input
             type="text"
             name="name"
-            value={name}
-            onChange={this.handleChange}
+            placeholder="name"
             id={this.nameInputId}
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-            required
           />
-        <Label htmlFor={this.numberInputId}></Label>
-            Number 
+          <FormError name="name" />
+          <Label htmlFor={this.numberInputId}></Label>
+          Number
           <Input
             type="tel"
             name="number"
-            value={number}
-            onChange={this.handleChange}
+            placeholder="111-22-33"
             id={this.numberInputId}
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-            required
           />
-        <AddButton type="submit">Add contact</AddButton>
-      </Form>
+          <FormError name="number" />
+          <AddButton type="submit">Add contact</AddButton>
+        </FormEl>
+      </Formik>
     );
   }
 }

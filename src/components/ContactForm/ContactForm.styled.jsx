@@ -1,6 +1,7 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
+import {Form, Field, ErrorMessage } from 'formik';
 
-export const Form = styled.form`
+export const FormEl = styled(Form)`
 display: flex;
 justify-content: space-between;
 flex-direction: column;
@@ -15,11 +16,26 @@ export const Label = styled.label`
 display: block;
 font-size: 24px;
 `
-export const Input = styled.input`
+export const Input = styled(Field)`
 padding: 8px 4px;
 width: 200px;
 border: ${props => `2px solid ${props.theme.colors.grey}`};
 `
+
+export const FormError = ({ name }) => {
+    return (
+      <ErrorMessage
+        name={name}
+        render={message => <ErrorText>{message}</ErrorText>}
+      />
+    );
+  };
+
+const ErrorText = styled.p`
+margin: 0px;
+color: ${props => `${props.theme.colors.red}`};
+`
+
 export const AddButton = styled.button`
 display: block;
 margin-right: auto;
