@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { nanoid } from 'nanoid';
 import { Formik } from 'formik';
 import { object, string } from 'yup';
@@ -28,22 +28,19 @@ class ContactForm extends Component {
       .required(),
     number: string()
       .matches(
-        /^[0-9-{3}0-9-{2}0-9-{2}]+$/,
+        /^[+]+[0-9-{2}0-9-{3}0-9-{3}0-9-{2}0-9-{2}]+$/,
         'Phone number must contain 8 number and must be digits'
       )
       .required(),
   });
 
 
- 
-
-
- handleChange = evt => {
-    const { name, value } = evt.currentTarget;
-    this.setState({
-      [name]: value,
-    });
-  };
+//  handleChange = evt => {
+//     const { name, value } = evt.currentTarget;
+//     this.setState({
+//       [name]: value,
+//     });
+//   };
 
   handleSubmit = (values, { resetForm }) => {
     this.props.onSubmit(values);
@@ -56,6 +53,7 @@ class ContactForm extends Component {
         initialValues={this.initialValues}
         validationSchema={this.userSchema}
         onSubmit={this.handleSubmit}
+        
       >
         <FormEl autoComplete="off">
           <Label htmlFor={this.nameInputId}></Label>
@@ -65,6 +63,7 @@ class ContactForm extends Component {
             name="name"
             placeholder="name"
             id={this.nameInputId}
+  
           />
           <FormError name="name" />
           <Label htmlFor={this.numberInputId}></Label>
@@ -72,8 +71,9 @@ class ContactForm extends Component {
           <Input
             type="tel"
             name="number"
-            placeholder="111-22-33"
+            placeholder="+38-022-111-22-33"
             id={this.numberInputId}
+      
           />
           <FormError name="number" />
           <AddButton type="submit">Add contact</AddButton>
