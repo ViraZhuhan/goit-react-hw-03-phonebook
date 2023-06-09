@@ -25,6 +25,6 @@ padding: 8px 12px;
 
 cursor: pointer;
 :hover {
-    background-color: ${props => `${props.theme.colors.grey}`}
+    background-color: ${props => `${props.theme.colors.blue}`}
 }
 `
