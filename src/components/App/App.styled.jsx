@@ -1,12 +1,16 @@
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
-  height: 100vh;
+  margin: 0 auto;
+
+width: 500px;
+height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: start;
+  justify-content: flex-start;
+  align-items: center;
   padding: 32px 40px;
   font-size: 40;
   color: #010101;
+  background-color: ${props => `${props.theme.colors.lightblue}`}
 `;
