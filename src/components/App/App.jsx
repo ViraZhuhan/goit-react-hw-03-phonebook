@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Title from '../Title';
 import ContactForm from '../ContactForm';
@@ -8,7 +8,7 @@ import ContactsList from '../ContactList';
 import { Container } from './App.styled';
 import { nanoid } from 'nanoid';
 
-class App extends Component {
+class App extends PureComponent {
   static defaultProps = {
     contacts: [
       { id: 'id-1', name: 'Rosie Simpson', number: '+49-362-459-12-56' },

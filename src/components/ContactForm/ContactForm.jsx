@@ -29,7 +29,7 @@ class ContactForm extends Component {
     number: string()
       .matches(
         /^[+]+[0-9-{2}0-9-{3}0-9-{3}0-9-{2}0-9-{2}]+$/,
-        'Phone number must contain 8 number and must be digits'
+        'Phone number must contain 12 number and must be digits'
       )
       .required(),
   });
