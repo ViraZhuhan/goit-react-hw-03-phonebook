@@ -5,7 +5,7 @@ display: flex;
 flex-direction: column;
 justify-content: flex-start;
 align-items: start;
-gap: 12px;
+gap: 6px;
 padding: 0px;
 `
 
